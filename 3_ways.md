@@ -20,7 +20,7 @@ systemctl status firewalld
 getenforce
   
 Находим в логах информацию о блокировании порта:  
-less (/var/log/audit/audit.log)  
+less /var/log/audit/audit.log  
 / 4881
   
 Копируем время, в которое был записан этот лог и, с помощью утилиты audit2why, смотрим информации о запрете:  
@@ -42,63 +42,63 @@ systemctl status nginx
 setsebool -P nis_enabled off
   
 Рестартуем nginx:  
-systemctl restart nginx
+systemctl restart nginx  
   
   
 ---------- СПОСОБ 2 ----------  
 (добавим нестандартный порт в имеющийся тип)  
   
-Посмотрим имеющиеся типы для http трафика:
+Посмотрим имеющиеся типы для http трафика:  
 semanage port -l | grep http
-
-Добавим порт в тип http_port_t:
+  
+Добавим порт в тип http_port_t:  
 semanage port -a -t http_port_t -p tcp 4881
-
+  
 Проверим:
-semanage port -l | grep http_port_t
+semanage port -l | grep http_port_t  
 
-Рестартуем nginx:
-systemctl restart nginx
+Рестартуем nginx:  
+systemctl restart nginx  
 
-Убедиться, что nginx стал активен:
-systemctl status nginx
+Убедиться, что nginx стал активен:  
+systemctl status nginx  
 
-Удалить нестандартный порт из имеющегося типа:
-semanage port -d -t http_port_t -p tcp 4881
+Удалить нестандартный порт из имеющегося типа:  
+semanage port -d -t http_port_t -p tcp 4881  
 
-Проверим:
-semanage port -l | grep http_port_t
+Проверим:  
+semanage port -l | grep http_port_t  
 
-Рестартуем nginx:
-systemctl restart nginx
+Рестартуем nginx:  
+systemctl restart nginx  
+  
+  
+---------- СПОСОБ 3 ----------  
+(Разрешим работу nginx c помощью формирования и установки модуля SELinux:)  
+  
+Попробуем снова запустить nginx:  
+systemctl start nginx  
 
+SELinux блокирует nginx. Посмотрим логи SELinux, которые относятся к nginx:  
+grep nginx /var/log/audit/audit.log  
 
----------- СПОСОБ 3 ----------
-(Разрешим работу nginx c помощью формирования и установки модуля SELinux:)
-
-Попробуем снова запустить nginx:
-systemctl start nginx
-
-SELinux блокирует nginx. Посмотрим логи SELinux, которые относятся к nginx:
-grep nginx /var/log/audit/audit.log
-
-Воспользуемся утилитой audit2allow для того, чтобы на основе логов
-SELinux сделать модуль, разрешающий работу nginx на нестандартном
+Воспользуемся утилитой audit2allow для того, чтобы на основе логов  
+SELinux сделать модуль, разрешающий работу nginx на нестандартном  
 порту:
-grep nginx /var/log/audit/audit.log | audit2allow -M nginx
+grep nginx /var/log/audit/audit.log | audit2allow -M nginx  
 
-Audit2allow сформировал модуль, и сообщил нам команду,
-с помощью которой можно применить данный модуль:
-semodule -i nginx.pp
+Audit2allow сформировал модуль, и сообщил нам команду,  
+с помощью которой можно применить данный модуль:  
+semodule -i nginx.pp  
 
-Попробуем снова запустить nginx:
-systemctl start nginx
+Попробуем снова запустить nginx:  
+systemctl start nginx  
 
-Убедиться, что nginx стал активен (изменения сохранятся после перезагрузки):
-systemctl status nginx
-
-Просмотреть все установленные модули:
-semodule -l
-
-Для удаления модуля воспользуемся командой:
-semodule -r nginx
+Убедиться, что nginx стал активен (изменения сохранятся после перезагрузки):  
+systemctl status nginx  
+  
+Просмотреть все установленные модули:  
+semodule -l  
+  
+Для удаления модуля воспользуемся командой:  
+semodule -r nginx 
