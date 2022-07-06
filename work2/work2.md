@@ -7,12 +7,12 @@
 
 При попытке удаленно внести изменения в зону ddns.lab происходит следующее:  
 
-[vagrant@client ~]$ nsupdate -k /etc/named.zonetransfer.key  
-\- server 192.168.50.10  
-\- zone ddns.lab  
-\- update add www.ddns.lab. 60 A 192.168.50.15  
-\- send  
-update failed: SERVFAIL  
+``[vagrant@client ~]$ nsupdate -k /etc/named.zonetransfer.key``  
+``\- server 192.168.50.10``  
+``\- zone ddns.lab``  
+``\- update add www.ddns.lab. 60 A 192.168.50.15``  
+``\- send``  
+``update failed: SERVFAIL``  
 
 ## Задача  
 
@@ -26,7 +26,7 @@ update failed: SERVFAIL
 
 На клиентской машине (client) посмотрим логи SELinux, чтобы понять в чём может быть проблема.  
 Для этого воспользуемся утилитой audit2why:  
-``sudo -i``
+``sudo -i``  
 ``cat /var/log/audit/audit.log | audit2why``  
   
 Тут мы видим, что на клиенте отсутствуют ошибки.  
