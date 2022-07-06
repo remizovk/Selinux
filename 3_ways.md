@@ -1,5 +1,5 @@
 SELINUX  
-Запуск nginx на нестандартном порту 3-мя разными способами 
+Запуск nginx на нестандартном порту 3-мя разными способами. 
   
 Задание выполняется на виртуальной машине с установленным nginx, который работает на порту TCP 4881. Порт
 TCP 4881 уже проброшен до хоста. SELinux включен.
@@ -9,46 +9,45 @@ TCP 4881 уже проброшен до хоста. SELinux включен.
 
 Все действия выполняются от пользователя root. Переходим в root пользователя:  
 sudo -i
-
-Установить пакет аудита SELinux core policy utilities:
+  
+Установить пакет аудита SELinux core policy utilities:  
 yum install policycoreutils-python
-
-Проверить, что отключен firewalld:
+  
+Проверить, что отключен firewalld:  
 systemctl status firewalld
-
-Проверить, что режим  SELinux выставлен на Enforcing:
+  
+Проверить, что режим  SELinux выставлен на Enforcing:  
 getenforce
-
-Находим в логах информацию о блокировании порта:
-less (/var/log/audit/audit.log)
+  
+Находим в логах информацию о блокировании порта:  
+less (/var/log/audit/audit.log)  
 / 4881
-
-Копируем время, в которое был записан этот лог и,
-с помощью утилиты audit2why, смотрим информации о запрете:
+  
+Копируем время, в которое был записан этот лог и, с помощью утилиты audit2why, смотрим информации о запрете:  
 grep 1657099333.635:868 /var/log/audit/audit.log | audit2why
-
-Вывод показывает, что нужно поменять параметр nis_enabled:
+  
+Вывод показывает, что нужно поменять параметр nis_enabled:  
 setsebool -P nis_enabled on
-
-Проверим статус параметр nis_enabled:
+  
+Проверим статус параметр nis_enabled:  
 getsebool -a | grep nis_enabled
-
-Рестартуем nginx:
-systemctl restart nginx
-
-Убедиться, что nginx стал активен:
+  
+Рестартуем nginx:  
+systemctl restart nginx  
+  
+Убедиться, что nginx стал активен:  
 systemctl status nginx
-
-Вернём запрет работы nginx на порту 4881 обратно:
+  
+Вернём запрет работы nginx на порту 4881 обратно:  
 setsebool -P nis_enabled off
-
-Рестартуем nginx:
+  
+Рестартуем nginx:  
 systemctl restart nginx
-
-
----------- СПОСОБ 2 ----------
-(добавим нестандартный порт в имеющийся тип)
-
+  
+  
+---------- СПОСОБ 2 ----------  
+(добавим нестандартный порт в имеющийся тип)  
+  
 Посмотрим имеющиеся типы для http трафика:
 semanage port -l | grep http
 
