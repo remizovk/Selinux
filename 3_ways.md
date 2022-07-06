@@ -82,13 +82,10 @@ systemctl start nginx
 SELinux блокирует nginx. Посмотрим логи SELinux, которые относятся к nginx:  
 grep nginx /var/log/audit/audit.log  
 
-Воспользуемся утилитой audit2allow для того, чтобы на основе логов  
-SELinux сделать модуль, разрешающий работу nginx на нестандартном  
-порту:
+Воспользуемся утилитой audit2allow для того, чтобы на основе логов SELinux сделать модуль, разрешающий работу nginx на нестандартном порту:  
 grep nginx /var/log/audit/audit.log | audit2allow -M nginx  
 
-Audit2allow сформировал модуль, и сообщил нам команду,  
-с помощью которой можно применить данный модуль:  
+Audit2allow сформировал модуль, и сообщил нам команду, с помощью которой можно применить данный модуль:  
 semodule -i nginx.pp  
 
 Попробуем снова запустить nginx:  
