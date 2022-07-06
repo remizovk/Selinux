@@ -12,7 +12,7 @@
 Установить пакет аудита SELinux core policy utilities:  
 ``yum install policycoreutils-python``
   
-Проверить, что отключен firewalld:\*  
+Проверить, что отключен firewalld:  
 ``systemctl status firewalld``
   
 Проверить, что режим  SELinux выставлен на Enforcing:  
