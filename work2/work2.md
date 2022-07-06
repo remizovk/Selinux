@@ -7,12 +7,12 @@
 
 При попытке удаленно внести изменения в зону ddns.lab происходит следующее:  
 
-``[vagrant@client ~]$ nsupdate -k /etc/named.zonetransfer.key  
-- server 192.168.50.10  
+[vagrant@client ~]$ nsupdate -k /etc/named.zonetransfer.key  
+\- server 192.168.50.10  
 \- zone ddns.lab  
 \- update add www.ddns.lab. 60 A 192.168.50.15  
 \- send  
-update failed: SERVFAIL``  
+update failed: SERVFAIL  
 
 ## Задача  
 
