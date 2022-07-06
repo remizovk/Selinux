@@ -7,13 +7,13 @@
 (разрешим работу nginx на порту TCP 4881 c помощью переключателей setsebool)
 
 Все действия выполняются от пользователя root. Переходим в root пользователя:  
-sudo -i
+* sudo -i
   
 Установить пакет аудита SELinux core policy utilities:  
-> yum install policycoreutils-python
+* yum install policycoreutils-python
   
-\*Проверить, что отключен firewalld:\*  
-systemctl status firewalld
+Проверить, что отключен firewalld:\*  
+* systemctl status firewalld
   
 Проверить, что режим  SELinux выставлен на Enforcing:  
 getenforce
