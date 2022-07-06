@@ -53,7 +53,7 @@
 Добавим порт в тип http_port_t:  
 ``semanage port -a -t http_port_t -p tcp 4881``
   
-Проверим:
+Проверим:  
 ``semanage port -l | grep http_port_t``  
 
 Рестартуем nginx:  
