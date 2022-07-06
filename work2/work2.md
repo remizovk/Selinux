@@ -2,17 +2,17 @@
 
 Инженер настроил следующую схему:  
 
-``- ns01 - DNS-сервер (192.168.50.10);  
-- client - клиентская рабочая станция (192.168.50.15)``  
+- ns01 - DNS-сервер (192.168.50.10);  
+- client - клиентская рабочая станция (192.168.50.15)  
 
 При попытке удаленно внести изменения в зону ddns.lab происходит следующее:  
 
-``[vagrant@client ~]$ nsupdate -k /etc/named.zonetransfer.key
-\> server 192.168.50.10
-\> zone ddns.lab
-\> update add www.ddns.lab. 60 A 192.168.50.15
-\> send
-update failed: SERVFAIL``
+``[vagrant@client ~]$ nsupdate -k /etc/named.zonetransfer.key  
+\> server 192.168.50.10  
+\> zone ddns.lab  
+\> update add www.ddns.lab. 60 A 192.168.50.15  
+\> send  
+update failed: SERVFAIL``  
 
 ## Задача  
 
