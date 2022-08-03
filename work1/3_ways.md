@@ -28,7 +28,7 @@
 Вывод показывает, что нужно поменять параметр nis_enabled:  
 ``setsebool -P nis_enabled on``
   
-Проверим статус параметр nis_enabled:  
+Проверим статус параметр nis_enabled:   
 ``getsebool -a | grep nis_enabled``
   
 Рестартуем nginx:  
